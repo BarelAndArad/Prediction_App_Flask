@@ -6,7 +6,6 @@ This is **Part 3** of the Machine Learning final assignment — wrapping the mod
 
 ---
 
-
 ## Prerequisites
 
 * **Python 3.10 – 3.12**
@@ -41,6 +40,21 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
+
+**4. Extract the trained model:**
+
+The trained model is stored compressed (`trained_model.7z`, ~9 MB) to keep the
+repository small. Extract it once after installing dependencies:
+
+```bash
+python -c "import py7zr; py7zr.SevenZipFile('trained_model.7z', mode='r').extractall()"
+```
+
+This creates `trained_model.pkl` (~39 MB) in the project root, which `api.py`
+loads at startup. You only need to do this once per clone.
+
+> 💡 Alternatively, if you have 7-Zip installed, you can right-click
+> `trained_model.7z` → **7-Zip → Extract Here**.
 
 ---
 
@@ -104,10 +118,11 @@ The predicted rating is returned as a number between **1 and 10** (rounded to on
 Prediction_App_Flask/
 ├── api.py                  # Flask backend — endpoints and prediction logic
 ├── assets_data_prep.py     # prepare_data() function from Part 2 (unchanged)
-├── trained_model.pkl       # Trained model from Part 2 (serialized with pickle)
+├── trained_model.7z        # Compressed trained model (extract before running)
+├── trained_model.pkl       # Created after extraction (not in repo, see .gitignore)
 ├── requirements.txt        # All dependencies with versions (pip freeze style)
 ├── README.md               # This file
-├── .gitignore              # Ignored files (venv, __pycache__, ...)
+├── .gitignore              # Ignored files (venv, __pycache__, trained_model.pkl, ...)
 └── templates/
     └── index.html          # Frontend form and result display
 ```
@@ -124,6 +139,7 @@ cd fresh_clone
 python -m venv venv
 .\venv\Scripts\Activate.ps1     # Windows
 pip install -r requirements.txt
+python -c "import py7zr; py7zr.SevenZipFile('trained_model.7z', mode='r').extractall()"
 python api.py
 ```
 
