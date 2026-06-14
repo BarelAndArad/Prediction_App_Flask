@@ -1,8 +1,8 @@
 # Movie Rating Prediction API
 
-A Flask web application that predicts IMDb-style movie ratings (1–10) based on movie metadata, using a pre-trained machine learning model.
+A Flask web application that predicts IMDb-style movie ratings (1-10) based on movie metadata, using a pre-trained machine learning model.
 
-This is **Part 3** of the Machine Learning final assignment — wrapping the model from Part 2 in a web service.
+This is **Part 3** of the Machine Learning final assignment - wrapping the model from Part 2 in a web service.
 
 ---
 
@@ -16,6 +16,14 @@ This is **Part 3** of the Machine Learning final assignment — wrapping the mod
 
 ## Installation
 
+> ⚠️ **Windows users:** clone the repository into a **short path** (e.g.
+> `C:\Projects\` or directly on `C:\`), and avoid paths with many nested
+> folders or non-English characters (e.g. avoid `Desktop\University\Course\Semester B\Project\...`).
+> Long paths can cause scikit-learn's compiled components to fail with
+> `ImportError: DLL load failed ... filename or extension is too long`.
+> If you hit this error, re-clone into a shorter path such as `C:\PFA` and
+> repeat the steps below — no code change is needed.
+
 **1. Clone the repository and navigate into it:**
 
 ```bash
@@ -25,15 +33,29 @@ cd Prediction_App_Flask
 
 **2. Create and activate a virtual environment:**
 
-```bash
+```powershell
 # Windows (PowerShell)
 python -m venv venv
 .\venv\Scripts\Activate.ps1
+```
 
-# Linux / macOS
+```bat
+:: Windows (Command Prompt / CMD)
+python -m venv venv
+venv\Scripts\activate.bat
+```
+
+```bash
+# Linux / macOS (bash/zsh)
 python -m venv venv
 source venv/bin/activate
 ```
+
+> 💡 If PowerShell shows an error about "running scripts is disabled"
+> (`UnauthorizedAccess` / execution policy), run this **once**, then retry:
+> ```powershell
+> Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+> ```
 
 **3. Install the dependencies:**
 
@@ -44,7 +66,8 @@ pip install -r requirements.txt
 **4. Extract the trained model:**
 
 The trained model is stored compressed (`trained_model.7z`, ~9 MB) to keep the
-repository small. Extract it once after installing dependencies:
+repository small. Extract it once after installing dependencies — this single
+command works in PowerShell, CMD, and bash (Linux/macOS) alike:
 
 ```bash
 python -c "import py7zr; py7zr.SevenZipFile('trained_model.7z', mode='r').extractall()"
@@ -129,15 +152,38 @@ Prediction_App_Flask/
 
 ---
 
+## Troubleshooting
+
+| Problem | Cause | Solution |
+|---|---|---|
+| `ImportError: DLL load failed ... filename or extension is too long` | The project path is too deep/long (common on Windows with nested Desktop folders) | Re-clone the repo into a short path, e.g. `C:\PFA`, and repeat the installation steps |
+| `running scripts is disabled on this system` (PowerShell) | PowerShell's execution policy blocks `Activate.ps1` | Run `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` once, then retry |
+| `InconsistentVersionWarning: Trying to unpickle estimator ... from version 1.3.0 when using version 1.3.2` | Minor scikit-learn version difference between training and runtime | **Harmless** — the model still loads and predicts correctly; can be ignored |
+| `jinja2.exceptions.TemplateNotFound: index.html` | `index.html` is not inside a `templates/` folder | Already fixed in this repo — `templates/index.html` is included |
+| `ModuleNotFoundError: No module named '...'` | A dependency wasn't installed | Re-run `pip install -r requirements.txt` inside the activated virtual environment |
+
+---
+
 ## Self-Check Before Submission
 
-To make sure everything works on a clean machine, run this end-to-end check:
+To make sure everything works on a clean machine, run this end-to-end check
+(use a **short path** on Windows, as noted above):
 
 ```bash
 git clone https://github.com/BarelAndArad/Prediction_App_Flask.git fresh_clone
 cd fresh_clone
 python -m venv venv
-.\venv\Scripts\Activate.ps1     # Windows
+```
+
+```powershell
+.\venv\Scripts\Activate.ps1     # Windows PowerShell
+```
+
+```bash
+source venv/bin/activate        # Linux / macOS
+```
+
+```bash
 pip install -r requirements.txt
 python -c "import py7zr; py7zr.SevenZipFile('trained_model.7z', mode='r').extractall()"
 python api.py
